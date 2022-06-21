@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  database:
+    container_name: hanseithon-mariadb
+    image: mariadb:latest
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: h@ns3ith0n
+      MARIADB_DATABASE: hanseithon
+    ports:
+      - 5432:3306
+    volumes:
+      - ./mariadb:/var/lib/mysql
