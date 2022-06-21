@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -11,6 +12,21 @@ import { AppService } from './app.service';
         process.env.NODE_ENV === 'production' ? '.env' : '.env.local',
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid('development', 'production').required(),
+      }),
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mariadb',
+        host: configService.get<string>('TYPEORM_HOST'),
+        port: parseInt(configService.get<string>('TYPEORM_PORT'), 10),
+        username: configService.get<string>('TYPEORM_USERNAME'),
+        password: configService.get<string>('TYPEORM_PASSWORD'),
+        database: configService.get<string>('TYPEORM_DATABASE'),
+        entities: [configService.get<string>('TYPEORM_ENTITIES')],
+        logging: configService.get<string>('TYPEORM_LOGGING') === 'true',
+        synchronize: configService.get<string>('NODE_ENV') === 'development',
       }),
     }),
   ],
