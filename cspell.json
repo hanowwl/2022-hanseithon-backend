@@ -6,6 +6,7 @@
     "nestjs",
     "typeorm",
     "prebuild",
+    "tinyint",
 
     /* commitlint */
     "commitlint",
