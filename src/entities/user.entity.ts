@@ -39,7 +39,7 @@ export class User {
   })
   lastLoginAt: Date;
 
-  @Column('varchar', { name: 'last_login_ip' })
+  @Column('varchar', { name: 'last_login_ip', default: null })
   lastLoginIp: string;
 
   @Column('timestamp', {
