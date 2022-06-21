@@ -13,7 +13,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class AuthService {
   constructor(
     @InjectRepository(User)
-    private userRepostory: Repository<User>,
+    private userRepository: Repository<User>,
   ) {}
 
   async register(createUserDto: CreateUserDto) {
@@ -30,7 +30,7 @@ export class AuthService {
     } = createUserDto;
     const salts = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salts);
-    const user = this.userRepostory.create({
+    const user = this.userRepository.create({
       username,
       password: hashedPassword,
       phone,
@@ -42,7 +42,7 @@ export class AuthService {
       networkVerified,
     });
     try {
-      await this.userRepostory.save(user);
+      await this.userRepository.save(user);
       return user ? { success: true } : { success: false };
     } catch (error) {
       if (error.errno === 1062) {
