@@ -5,6 +5,7 @@
     /* nestjs */
     "nestjs",
     "typeorm",
+    "prebuild",
 
     /* commitlint */
     "commitlint",
