@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity('user', { schema: 'hanseithon' })
+@Unique(['username'])
 export class User {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
@@ -23,10 +24,13 @@ export class User {
   @Column('int', { name: 'student_grade' })
   studentGrade: number;
 
+  @Column('int', { name: 'student_classroom' })
+  studentClassroom: number;
+
   @Column('int', { name: 'student_number' })
   studentNumber: number;
 
-  @Column('tinyint', { name: 'network_verified' })
+  @Column('tinyint', { name: 'network_verified', default: 0 })
   networkVerified: number;
 
   @Column('timestamp', {
