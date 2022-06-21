@@ -14,5 +14,5 @@
     "hanseithon"
   ],
   "flagWords": [],
-  "ignorePaths": ["node_modules/**", "./README.md"]
+  "ignorePaths": ["node_modules/**", "./README.md", ".gitignore"]
 }
