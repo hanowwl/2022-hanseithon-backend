@@ -1,1 +1,1 @@
-export const password_match = /^[a-zA-Z0-9!@#$%^&*]*$/;
+export const PASSWORD_REGEX = /^[a-zA-Z0-9!@#$%^&*]*$/;
