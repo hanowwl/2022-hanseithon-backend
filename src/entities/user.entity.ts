@@ -1,62 +1,49 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Column, Entity, Unique } from 'typeorm';
+import { BaseEntity } from './base.entity';
 
 @Entity()
 @Unique(['username'])
-export class User {
-  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
-  id: number;
-
-  @Column('varchar', { name: 'username' })
+export class User extends BaseEntity {
+  @Column({ type: 'varchar', length: 16 })
   username: string;
 
-  @Column('varchar', { name: 'password' })
+  @Column({ type: 'varchar' })
   password: string;
 
-  @Column('varchar', { name: 'phone' })
+  @Column({ type: 'varchar', length: 11 })
   phone: string;
 
-  @Column('varchar', { name: 'name' })
+  @Column({ type: 'varchar', length: 4 })
   name: string;
 
-  @Column('varchar', { name: 'student_department' })
+  @Column({ type: 'varchar', name: 'student_department' })
   studentDepartment: string;
 
-  @Column('int', { name: 'student_grade' })
+  @Column({ type: 'int', name: 'student_grade', precision: 1 })
   studentGrade: number;
 
-  @Column('int', { name: 'student_classroom' })
+  @Column({ type: 'int', name: 'student_classroom', precision: 1 })
   studentClassroom: number;
 
-  @Column('int', { name: 'student_number' })
+  @Column({ type: 'int', name: 'student_number', precision: 2 })
   studentNumber: number;
 
-  @Column('tinyint', { name: 'network_verified', default: 0 })
-  networkVerified: number;
+  @Column({ type: 'tinyint', name: 'network_verified', default: 0 })
+  networkVerified: boolean;
 
-  @Column('timestamp', {
+  @Column({
+    type: 'timestamp',
     name: 'last_login_at',
-    default: () => 'CURRENT_TIMESTAMP',
+    default: null,
+    nullable: true,
   })
-  lastLoginAt: Date;
+  lastLoginAt: Date | null;
 
-  @Column('varchar', { name: 'last_login_ip', default: null })
-  lastLoginIp: string;
-
-  @Column('timestamp', {
-    name: 'created_at',
-    default: () => 'CURRENT_TIMESTAMP',
+  @Column({
+    type: 'varchar',
+    name: 'last_login_ip',
+    default: null,
+    nullable: true,
   })
-  createdAt: Date;
-
-  @Column('timestamp', {
-    name: 'updated_at',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
-
-  @Column('timestamp', {
-    name: 'deleted_at',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  deletedAt: Date;
+  lastLoginIp: string | null;
 }

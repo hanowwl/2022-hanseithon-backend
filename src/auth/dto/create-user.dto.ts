@@ -35,5 +35,5 @@ export class CreateUserDto {
   @MaxLength(30)
   studentNumber: number;
 
-  networkVerified: number;
+  networkVerified: boolean;
 }
