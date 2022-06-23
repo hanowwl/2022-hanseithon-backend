@@ -26,10 +26,10 @@ export class AuthService {
       studentGrade,
       studentClassroom,
       studentNumber,
-      networkVerified,
     } = createUserDto;
-    const salts = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(password, salts);
+    const salt = bcrypt.genSaltSync();
+    const hashedPassword = bcrypt.hashSync(password, salt);
+
     const user = this.userRepository.create({
       username,
       password: hashedPassword,
@@ -39,11 +39,12 @@ export class AuthService {
       studentGrade,
       studentClassroom,
       studentNumber,
-      networkVerified,
+      networkVerified: false,
     });
+
     try {
       await this.userRepository.save(user);
-      return user ? { success: true } : { success: false };
+      return { success: true, message: '', result: '' };
     } catch (error) {
       if (error.errno === 1062) {
         throw new ConflictException({
