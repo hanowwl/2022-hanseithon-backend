@@ -21,7 +21,6 @@ export class AccessTokenStrategy extends PassportStrategy(
   }
 
   async validate(payload) {
-    console.log(payload, payload.sub);
     return this.usersService.getById(payload.sub);
   }
 }
