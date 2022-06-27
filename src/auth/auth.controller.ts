@@ -3,8 +3,7 @@ import { User } from 'src/entities';
 import { AuthService } from './auth.service';
 import { GetUser } from './decorators';
 import { CreateUserDto } from './dto/create-user.dto';
-import { RefreshTokenAuthGuard } from './guards';
-import { LocalAuthGuard } from './guards/local.guard';
+import { LocalAuthGuard, RefreshTokenAuthGuard } from './guards';
 
 @Controller('auth')
 export class AuthController {

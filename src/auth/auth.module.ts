@@ -25,7 +25,7 @@ import {
           secret: configService.get<string>('JWT_ACCESS_TOKEN_SECRET_KEY'),
           signOptions: {
             expiresIn: parseInt(
-              configService.get<string>('JWT_ACCESS_TOKEN_EXPIRESIN'),
+              configService.get<string>('JWT_ACCESS_TOKEN_EXPIRES_IN'),
             ),
           },
         };

@@ -19,13 +19,13 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private readonly usersSerivce: UsersService,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     public readonly configService: ConfigService,
   ) {}
 
   async validateUser(username: string, password: string) {
-    const user = await this.usersSerivce.findUser(username);
+    const user = await this.usersService.findUser(username);
     if (user && (await bcrypt.compare(password, user.password))) {
       const { password, ...result } = user;
       return result;
@@ -68,7 +68,7 @@ export class AuthService {
         {
           secret: this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET_KEY'),
           expiresIn: parseInt(
-            this.configService.get<string>('JWT_ACCESS_TOKEN_EXPIRESIN'),
+            this.configService.get<string>('JWT_ACCESS_TOKEN_EXPIRES_IN'),
           ),
         },
       ),
@@ -84,7 +84,7 @@ export class AuthService {
             'JWT_REFRESH_TOKEN_SECRET_KEY',
           ),
           expiresIn: parseInt(
-            this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRESIN'),
+            this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRES_IN'),
           ),
         },
       ),

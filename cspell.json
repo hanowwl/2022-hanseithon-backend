@@ -7,8 +7,6 @@
     "typeorm",
     "prebuild",
     "tinyint",
-    "Serivce",
-    "EXPIRESIN",
 
     /* commitlint */
     "commitlint",
