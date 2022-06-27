@@ -38,11 +38,33 @@ export class AuthService {
   }
 
   async register(createUserDto: CreateUserDto) {
-    createUserDto.password = await this.hashData(createUserDto.password);
-    const user = this.userRepository.create(createUserDto);
+    const {
+      username,
+      password,
+      phone,
+      name,
+      studentDepartment,
+      studentGrade,
+      studentClassroom,
+      studentNumber,
+      networkVerified,
+    } = createUserDto;
+    const salts = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salts);
+    const user = this.userRepository.create({
+      username,
+      password: hashedPassword,
+      phone,
+      name,
+      studentDepartment,
+      studentGrade,
+      studentClassroom,
+      studentNumber,
+      networkVerified,
+    });
     try {
       await this.userRepository.save(user);
-      return { success: true, message: '', result: '' };
+      return user ? { success: true } : { success: false };
     } catch (error) {
       if (error.errno === 1062) {
         throw new ConflictException({
@@ -54,11 +76,6 @@ export class AuthService {
         throw new InternalServerErrorException();
       }
     }
-  }
-
-  async hashData(data: string) {
-    const salt = await bcrypt.genSaltSync();
-    return await bcrypt.hashSync(data, salt);
   }
 
   async generateAccessToken(id: number) {
