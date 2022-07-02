@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
@@ -61,7 +62,7 @@ export class AuthService {
 
       return '';
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException('일시적인 오류가 발생했어요');
     }
   }
 }
