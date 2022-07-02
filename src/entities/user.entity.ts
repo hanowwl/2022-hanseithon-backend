@@ -2,7 +2,7 @@ import { Column, Entity, Unique } from 'typeorm';
 import { BaseEntity } from './base.entity';
 
 @Entity()
-@Unique(['username'])
+@Unique(['username', 'phone'])
 export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 16 })
   username: string;
