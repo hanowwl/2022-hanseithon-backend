@@ -13,6 +13,9 @@ export class CreateUserDto {
   password: string;
 
   @IsNotEmpty({ message: '이 항목은 필수 입력 항목입니다.' })
+  passwordCheck: string;
+
+  @IsNotEmpty({ message: '이 항목은 필수 입력 항목입니다.' })
   @MaxLength(11)
   phone: string;
 
@@ -34,6 +37,4 @@ export class CreateUserDto {
   @IsNotEmpty({ message: '이 항목은 필수 입력 항목입니다.' })
   @MaxLength(30)
   studentNumber: number;
-
-  networkVerified: number;
 }

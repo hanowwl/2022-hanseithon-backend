@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   HttpException,
   HttpStatus,
@@ -23,8 +24,13 @@ export class AuthService {
     private readonly jwtService: JwtService,
     public readonly configService: ConfigService,
   ) {}
+  
+  private hash(data: string) {
+    const salt = bcrypt.genSaltSync();
+    return bcrypt.hashSync(data, salt);
+  }
 
-  async validateUser(username: string, password: string) {
+  public async validateUser(username: string, password: string) {
     const user = await this.usersService.findUser(username);
     if (user && (await bcrypt.compare(password, user.password))) {
       const { password, ...result } = user;
@@ -37,49 +43,52 @@ export class AuthService {
     }
   }
 
-  async register(createUserDto: CreateUserDto) {
+  public async register(createUserDto: CreateUserDto) {
     const {
       username,
       password,
+      passwordCheck,
       phone,
       name,
+      studentClassroom,
       studentDepartment,
       studentGrade,
-      studentClassroom,
       studentNumber,
-      networkVerified,
     } = createUserDto;
-    const salts = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(password, salts);
-    const user = this.userRepository.create({
-      username,
-      password: hashedPassword,
-      phone,
-      name,
-      studentDepartment,
-      studentGrade,
-      studentClassroom,
-      studentNumber,
-      networkVerified,
-    });
+
     try {
+      if (password !== passwordCheck)
+        throw new BadRequestException('입력한 비밀번호가 서로 같지 않아요');
+
+      const isAlreadyExistUser = await this.userRepository.count({
+        where: [{ username }, { phone }],
+      });
+
+      if (isAlreadyExistUser)
+        throw new ConflictException('이미 사용 중인 아이디 또는 전화번호에요');
+
+      const user = this.userRepository.create({
+        username,
+        password: this.hash(password),
+        phone,
+        name,
+        studentClassroom,
+        studentDepartment,
+        studentGrade,
+        studentNumber,
+        networkVerified: false,
+      });
+
       await this.userRepository.save(user);
-      return user ? { success: true } : { success: false };
+
+      return '';
     } catch (error) {
-      if (error.errno === 1062) {
-        throw new ConflictException({
-          success: false,
-          message:
-            '해당 아이디로 가입할 수 없습니다. 해당 아이디는 현재 이용 중인 아이디입니다.',
-        });
-      } else {
-        throw new InternalServerErrorException();
-      }
+      throw new InternalServerErrorException('일시적인 오류가 발생했어요');
     }
   }
 
-  async generateAccessToken(id: number) {
-    const [access_token] = await Promise.all([
+  public async generateAccessToken(id: number) {
+    const [accessToken] = await Promise.all([
       this.jwtService.signAsync(
         { sub: id },
         {
@@ -90,9 +99,10 @@ export class AuthService {
         },
       ),
     ]);
-    return access_token;
+    return accessToken;
   }
-  async generateRefreshToken(id: number) {
+  
+  public async generateRefreshToken(id: number) {
     const [refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { sub: id },
