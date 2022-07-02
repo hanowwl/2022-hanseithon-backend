@@ -1,7 +1,7 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
@@ -16,45 +16,52 @@ export class AuthService {
     private userRepository: Repository<User>,
   ) {}
 
-  async register(createUserDto: CreateUserDto) {
+  private hash(data: string) {
+    const salt = bcrypt.genSaltSync();
+    return bcrypt.hashSync(data, salt);
+  }
+
+  public async register(createUserDto: CreateUserDto) {
     const {
       username,
       password,
+      passwordCheck,
       phone,
       name,
+      studentClassroom,
       studentDepartment,
       studentGrade,
-      studentClassroom,
       studentNumber,
     } = createUserDto;
-    const salt = bcrypt.genSaltSync();
-    const hashedPassword = bcrypt.hashSync(password, salt);
-
-    const user = this.userRepository.create({
-      username,
-      password: hashedPassword,
-      phone,
-      name,
-      studentDepartment,
-      studentGrade,
-      studentClassroom,
-      studentNumber,
-      networkVerified: false,
-    });
 
     try {
+      if (password !== passwordCheck)
+        throw new BadRequestException('입력한 비밀번호가 서로 같지 않아요');
+
+      const isAlreadyExistUser = await this.userRepository.count({
+        where: [{ username }, { phone }],
+      });
+
+      if (isAlreadyExistUser)
+        throw new ConflictException('이미 사용 중인 아이디 또는 전화번호에요');
+
+      const user = this.userRepository.create({
+        username,
+        password: this.hash(password),
+        phone,
+        name,
+        studentClassroom,
+        studentDepartment,
+        studentGrade,
+        studentNumber,
+        networkVerified: false,
+      });
+
       await this.userRepository.save(user);
-      return { success: true, message: '', result: '' };
+
+      return '';
     } catch (error) {
-      if (error.errno === 1062) {
-        throw new ConflictException({
-          success: false,
-          message:
-            '해당 아이디로 가입할 수 없습니다. 해당 아이디는 현재 이용 중인 아이디입니다.',
-        });
-      } else {
-        throw new InternalServerErrorException();
-      }
+      throw error;
     }
   }
 }
