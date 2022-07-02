@@ -1,6 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { User } from 'src/entities';
 import { AuthService } from './auth.service';
+import { GetUser } from './decorators';
 import { CreateUserDto } from './dto/create-user.dto';
+import { LocalAuthGuard, RefreshTokenAuthGuard } from './guards';
 
 @Controller('auth')
 export class AuthController {
@@ -9,5 +12,24 @@ export class AuthController {
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
     return await this.authService.register(createUserDto);
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  async login(@GetUser() user: User) {
+    const accessToken = await this.authService.generateAccessToken(user.id);
+    const refreshToken = await this.authService.generateRefreshToken(user.id);
+    return {
+      success: true,
+      message: '로그인에 성공하셨습니다.',
+      result: { accessToken, refreshToken },
+    };
+  }
+
+  @UseGuards(RefreshTokenAuthGuard)
+  @Post('refresh')
+  async refresh(@GetUser() user: User) {
+    const accessToken = await this.authService.generateAccessToken(user.id);
+    return { success: true, message: '', result: { accessToken } };
   }
 }
