@@ -24,7 +24,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     public readonly configService: ConfigService,
   ) {}
-  
+
   private hash(data: string) {
     const salt = bcrypt.genSaltSync();
     return bcrypt.hashSync(data, salt);
@@ -87,7 +87,7 @@ export class AuthService {
     }
   }
 
-  public async generateAccessToken(id: number) {
+  public async generateAccessToken(id: string) {
     const [accessToken] = await Promise.all([
       this.jwtService.signAsync(
         { sub: id },
@@ -101,8 +101,8 @@ export class AuthService {
     ]);
     return accessToken;
   }
-  
-  public async generateRefreshToken(id: number) {
+
+  public async generateRefreshToken(id: string) {
     const [refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { sub: id },
