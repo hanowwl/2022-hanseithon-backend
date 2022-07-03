@@ -8,6 +8,6 @@ export class UsersController {
   @UseGuards(AccessTokenAuthGuard)
   @Get('profile')
   async profile(@GetUser() user: User) {
-    return { success: true, message: '', result: user };
+    return user;
   }
 }

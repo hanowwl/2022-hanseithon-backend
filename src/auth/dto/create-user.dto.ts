@@ -1,4 +1,11 @@
-import { IsNotEmpty, Matches, MaxLength, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  Matches,
+  Max,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
 import { PASSWORD_REGEX } from 'src/constants/regex';
 
 export class CreateUserDto {
@@ -27,14 +34,17 @@ export class CreateUserDto {
   studentDepartment: string;
 
   @IsNotEmpty({ message: '이 항목은 필수 입력 항목입니다.' })
-  @MaxLength(3)
+  @Min(1, { message: '학년은 1보다 작아서는 안됩니다.' })
+  @Max(3, { message: '학년은 3보다 크지 않아야 합니다.' })
   studentGrade: number;
 
   @IsNotEmpty({ message: '이 항목은 필수 입력 항목입니다.' })
-  @MaxLength(5)
+  @Min(1, { message: '반은 1보다 작아서는 안됩니다.' })
+  @Max(2, { message: '반은 2보다 크지 않아야 합니다.' })
   studentClassroom: number;
 
   @IsNotEmpty({ message: '이 항목은 필수 입력 항목입니다.' })
-  @MaxLength(30)
+  @Min(1, { message: '번호는 1보다 작아서는 안됩니다.' })
+  @Max(30, { message: '번호는 30보다 크지 않아야 합니다.' })
   studentNumber: number;
 }

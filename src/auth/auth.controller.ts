@@ -19,17 +19,13 @@ export class AuthController {
   async login(@GetUser() user: User) {
     const accessToken = await this.authService.generateAccessToken(user.id);
     const refreshToken = await this.authService.generateRefreshToken(user.id);
-    return {
-      success: true,
-      message: '로그인에 성공하셨습니다.',
-      result: { accessToken, refreshToken },
-    };
+    return { accessToken, refreshToken };
   }
 
   @UseGuards(RefreshTokenAuthGuard)
   @Post('refresh')
   async refresh(@GetUser() user: User) {
     const accessToken = await this.authService.generateAccessToken(user.id);
-    return { success: true, message: '', result: { accessToken } };
+    return { accessToken };
   }
 }
