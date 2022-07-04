@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { User } from 'src/entities';
+import { GetUser } from '../users/decorators';
 import { AuthService } from './auth.service';
-import { GetUser } from './decorators';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LocalAuthGuard, RefreshTokenAuthGuard } from './guards';
 
