@@ -10,11 +10,11 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async findUser(username: string) {
+  public async findUser(username: string) {
     return await this.userRepository.findOne({ where: { username } });
   }
 
-  async getById(id: string) {
+  public async getById(id: string) {
     const user = await this.userRepository.findOne({ where: { id } });
     if (user) {
       return user;
@@ -26,7 +26,7 @@ export class UsersService {
     );
   }
 
-  async deleteUser(username: string) {
+  public async deleteUser(username: string) {
     return await this.userRepository.delete(username);
   }
 }
