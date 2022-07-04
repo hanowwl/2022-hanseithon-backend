@@ -83,6 +83,7 @@ export class AuthService {
 
       return '';
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       throw new InternalServerErrorException('일시적인 오류가 발생했어요');
     }
   }
