@@ -11,7 +11,7 @@ export class Team extends BaseEntity {
   @JoinColumn({ name: 'owner_id' })
   owner: User;
 
-  @OneToMany(() => User, (user) => user.id)
+  @OneToMany(() => User, (user) => user.team)
   members: User[];
 
   @Column({ type: 'varchar', length: 6, name: 'invite_code' })
