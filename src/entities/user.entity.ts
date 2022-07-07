@@ -1,6 +1,5 @@
-import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
+import { Column, Entity, Unique } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { Team } from './team.entity';
 
 @Entity()
 @Unique(['username', 'phone'])
@@ -47,8 +46,4 @@ export class User extends BaseEntity {
     nullable: true,
   })
   lastLoginIp: string | null;
-
-  @ManyToOne(() => Team, (team) => team.members)
-  @JoinColumn({ name: 'team_id' })
-  team: Team;
 }
