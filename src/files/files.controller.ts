@@ -22,7 +22,6 @@ export class FilesController {
     @UploadedFile() file: Express.Multer.File,
     @GetUser() user,
   ) {
-    console.log(file);
     const uploadedFile = this.filesService.uploadFile(file);
 
     return {
