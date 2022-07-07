@@ -1,5 +1,7 @@
+import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import * as express from 'express';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './libs/filters';
 import { ResponseInterceptor } from './libs/interceptors';
@@ -16,6 +18,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.use('/public', express.static(join(__dirname, '../public')));
 
   await app.listen(4000);
 }
