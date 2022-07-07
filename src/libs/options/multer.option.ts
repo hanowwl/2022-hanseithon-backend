@@ -28,9 +28,3 @@ export const multerOptions = {
     },
   }),
 };
-
-export const createImageURL = (file) => {
-  const serverAddress = 'http://localhost:4000';
-
-  return `${serverAddress}/public/${file.filename}`;
-};

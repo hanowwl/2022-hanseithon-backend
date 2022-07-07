@@ -1,5 +1,6 @@
 import {
   Controller,
+  NotFoundException,
   Post,
   UploadedFile,
   UseGuards,
@@ -22,12 +23,13 @@ export class FilesController {
     @UploadedFile() file: Express.Multer.File,
     @GetUser() user,
   ) {
-    const uploadedFile = this.filesService.uploadFile(file);
-
-    return {
-      files: uploadedFile,
-      filename: file.originalname,
-      user: user.name,
-    };
+    if (file) {
+      return {
+        filename: file.originalname,
+        user: user.name,
+      };
+    } else {
+      throw new NotFoundException('파일을 찾을 수 없어요');
+    }
   }
 }
