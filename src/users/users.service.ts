@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities';
 import { Repository } from 'typeorm';
@@ -10,23 +15,19 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async findUser(username: string) {
-    return await this.userRepository.findOne({ where: { username } });
-  }
-
-  async getById(id: string) {
+  public async findUserById(id: string) {
     const user = await this.userRepository.findOne({ where: { id } });
-    if (user) {
-      return user;
-    }
-
-    throw new HttpException(
-      'id에 해당하는 유저가 없습니다.',
-      HttpStatus.NOT_FOUND,
-    );
+    if (!user) throw new NotFoundException('유저 정보를 찾을 수 없어요');
+    return user;
   }
 
-  async deleteUser(username: string) {
+  public async findUserByUsername(username: string) {
+    const user = await this.userRepository.findOne({ where: { username } });
+    if (!user) throw new NotFoundException('유저 정보를 찾을 수 없어요');
+    return user;
+  }
+
+  public async deleteUserByUsername(username: string) {
     return await this.userRepository.delete(username);
   }
 }

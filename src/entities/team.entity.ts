@@ -1,19 +1,31 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  Unique,
+} from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { TeamMember } from './team-member.entity';
 import { User } from './user.entity';
 
 @Entity('team')
+@Unique(['name'])
 export class Team extends BaseEntity {
-  @Column('varchar', { unique: true })
+  @Column({ type: 'varchar' })
   name: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  description: string;
 
   @OneToOne(() => User)
   @JoinColumn({ name: 'owner_id' })
   owner: User;
 
-  @OneToMany(() => User, (user) => user.id)
-  members: User[];
+  @OneToMany(() => TeamMember, (member) => member.team)
+  members: TeamMember[];
 
-  @Column({ type: 'varchar', length: 6 })
-  invite_code: string;
+  @Column({ type: 'varchar', length: 6, name: 'invite_code' })
+  inviteCode: string;
 }
