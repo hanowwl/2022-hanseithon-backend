@@ -1,11 +1,7 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities';
+import { TeamsService } from 'src/teams/teams.service';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -13,7 +9,17 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly teamService: TeamsService,
   ) {}
+
+  public async getUserProfile(id: string) {
+    const user = await this.findUserById(id);
+    const team = await this.teamService.findTeamByMemberId(user.id);
+    return {
+      ...user,
+      team: team || null,
+    };
+  }
 
   public async findUserById(id: string) {
     const user = await this.userRepository.findOne({ where: { id } });
