@@ -1,3 +1,4 @@
+import { TEAM_TYPE, TEAM_TYPE_VALUES } from 'src/constants/type';
 import {
   Column,
   Entity,
@@ -28,4 +29,7 @@ export class Team extends BaseEntity {
 
   @Column({ type: 'varchar', length: 6, name: 'invite_code' })
   inviteCode: string;
+
+  @Column({ type: 'enum', enum: TEAM_TYPE_VALUES })
+  type: TEAM_TYPE;
 }

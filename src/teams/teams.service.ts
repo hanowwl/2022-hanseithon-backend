@@ -76,7 +76,7 @@ export class TeamsService {
 
   public async createTeam(user: User, createTeamDto: CreateTeamDto) {
     try {
-      const { name, description, position } = createTeamDto;
+      const { name, description, position, type } = createTeamDto;
       const userTeam = await this.findTeamByMemberId(user.id);
       if (userTeam) throw new BadRequestException('이미 소속 중인 팀이 있어요');
 
@@ -93,6 +93,7 @@ export class TeamsService {
         owner: user,
         members: [],
         inviteCode: getRandomString(6),
+        type,
       });
       await this.teamRepository.save(team);
 
