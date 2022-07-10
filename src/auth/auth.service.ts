@@ -48,6 +48,7 @@ export class AuthService {
       username,
       password,
       passwordCheck,
+      email,
       phone,
       name,
       studentClassroom,
@@ -61,15 +62,18 @@ export class AuthService {
         throw new BadRequestException('입력한 비밀번호가 서로 같지 않아요');
 
       const isAlreadyExistUser = await this.userRepository.count({
-        where: [{ username }, { phone }],
+        where: [{ username }, { phone }, { email }],
       });
 
       if (isAlreadyExistUser)
-        throw new ConflictException('이미 사용 중인 아이디 또는 전화번호에요');
+        throw new ConflictException(
+          '이미 사용 중인 아이디 또는 전화번호, 이메일이에요',
+        );
 
       const user = this.userRepository.create({
         username,
         password: this.hash(password),
+        email,
         phone,
         name,
         studentClassroom,
