@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Ip, Post, UseGuards } from '@nestjs/common';
 import { User } from 'src/entities';
 import { GetUser } from '../users/decorators';
 import { AuthService } from './auth.service';
@@ -16,10 +16,8 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@GetUser() user: User) {
-    const accessToken = await this.authService.generateAccessToken(user.id);
-    const refreshToken = await this.authService.generateRefreshToken(user.id);
-    return { accessToken, refreshToken };
+  async login(@GetUser() user: User, @Ip() ip: string) {
+    return this.authService.login(user, ip);
   }
 
   @UseGuards(RefreshTokenAuthGuard)

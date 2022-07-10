@@ -92,6 +92,16 @@ export class AuthService {
     }
   }
 
+  public async login(user, ip) {
+    user.lastLoginIp = ip;
+    user.lastLoginAt = new Date();
+    await this.userRepository.save(user);
+    console.log(user);
+    const accessToken = await this.generateAccessToken(user.id);
+    const refreshToken = await this.generateRefreshToken(user.id);
+    return { accessToken, refreshToken };
+  }
+
   public async generateAccessToken(id: string) {
     const [accessToken] = await Promise.all([
       this.jwtService.signAsync(
