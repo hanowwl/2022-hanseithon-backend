@@ -1,5 +1,5 @@
 const PASSWORD_REGEX =
-  /^(?=.[A-Za-z])(?=.\d)(?=.[@$!%#?&])[A-Za-z\d@$!%#?&]{8,16}$/;
+  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/;
 const USERNAME_REGEX = /^[a-z0-9$@$!%#?&]{4,16}$/;
 const NAME_REGEX = /^[가-힣]{2,4}$/;
 const PHONE_REGEX = /01[0-1, 7][0-9]{7,8}$/;
