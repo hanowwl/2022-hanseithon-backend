@@ -9,19 +9,21 @@ import {
 export class CreateUserDto {
   @IsNotEmpty()
   @Matches(USERNAME_REGEX, {
-    message: '4~16자 영문, 숫자, 특수문자를 입력해주세요',
+    message: '최소 4자, 최대 16자까지 영문, 숫자, 특수문자만 입력 가능해요',
   })
   username: string;
 
   @IsNotEmpty()
   @Matches(PASSWORD_REGEX, {
-    message: '8~16자 영문, 숫자, 특수문자 조합을 입력해주세요',
+    message:
+      '최소 8자, 최대 16자까지 영문, 숫자, 특수문자 조합만 입력 가능해요',
   })
   password: string;
 
   @IsNotEmpty()
   @Matches(PASSWORD_REGEX, {
-    message: '8~16자 영문, 숫자, 특수문자 조합을 입력해주세요',
+    message:
+      '최소 8자, 최대 16자까지 영문, 숫자, 특수문자 조합만 입력 가능해요',
   })
   passwordCheck: string;
 
@@ -31,13 +33,13 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @Matches(PHONE_REGEX, {
-    message: '8~16자 영문, 숫자, 특수문자 조합을 입력해주세요',
+    message: '최소 10자, 최대 11자까지인 올바른 전화번호만 입력 가능해요',
   })
   phone: string;
 
   @IsNotEmpty()
   @Matches(NAME_REGEX, {
-    message: '2~4자 이름을 입력해주세요',
+    message: '최소 2자, 최대 4자까지인 올바른 이름을 입력해주세요',
   })
   name: string;
 
@@ -45,17 +47,17 @@ export class CreateUserDto {
   studentDepartment: string;
 
   @IsNotEmpty()
-  @Min(1, { message: '학년은 1보다 작아서는 안됩니다.' })
-  @Max(3, { message: '학년은 3보다 크지 않아야 합니다.' })
+  @Min(1, { message: '학년은 1보다 작아서는 안돼요' })
+  @Max(3, { message: '학년은 3보다 크지 않아야 해요.' })
   studentGrade: number;
 
   @IsNotEmpty()
-  @Min(1, { message: '반은 1보다 작아서는 안됩니다.' })
-  @Max(2, { message: '반은 2보다 크지 않아야 합니다.' })
+  @Min(1, { message: '반은 1보다 작아서는 안돼요' })
+  @Max(2, { message: '반은 2보다 크지 않아야 해요' })
   studentClassroom: number;
 
   @IsNotEmpty()
-  @Min(1, { message: '번호는 1보다 작아서는 안됩니다.' })
-  @Max(30, { message: '번호는 30보다 크지 않아야 합니다.' })
+  @Min(1, { message: '번호는 1보다 작아서는 안돼요' })
+  @Max(30, { message: '번호는 30보다 크지 않아야 해요' })
   studentNumber: number;
 }
