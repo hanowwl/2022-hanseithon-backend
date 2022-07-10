@@ -2,23 +2,13 @@ import {
   TEAM_MEMBER_POSITION_TYPE,
   TEAM_MEMBER_POSITION_VALUES,
 } from 'src/constants/type';
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { BaseEntity } from './base.entity';
 import { Team } from './team.entity';
 import { User } from './user.entity';
 
 @Entity('team_member')
 export class TeamMember extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
   @Column({ type: 'enum', enum: TEAM_MEMBER_POSITION_VALUES })
   position: TEAM_MEMBER_POSITION_TYPE;
 
