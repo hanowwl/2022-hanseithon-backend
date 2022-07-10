@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/entities';
+import { TeamMember, User } from 'src/entities';
 import { TeamsModule } from 'src/teams/teams.module';
 import { UsersService } from 'src/users/users.service';
 import { AuthController } from './auth.controller';
@@ -32,7 +32,7 @@ import {
         };
       },
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, TeamMember]),
     TeamsModule,
   ],
   controllers: [AuthController],
