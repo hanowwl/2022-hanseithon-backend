@@ -8,7 +8,6 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @UseGuards(AccessTokenAuthGuard)
   @Get()
   async getAllUserProfile() {
     return await this.usersService.getAllUserProfile();
