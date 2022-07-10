@@ -14,7 +14,7 @@ export class UsersService {
     public readonly teamService: TeamsService,
   ) {}
 
-  private async formatAllUserForResponse(teamMember: TeamMember[]) {
+  private async formatAllUserForResponse(teamMembers: TeamMember[]) {
     const formatAllUserData = (member: User | TeamMember) => {
       const user = member instanceof User ? member : member.user;
       return {
@@ -22,21 +22,21 @@ export class UsersService {
       };
     };
 
-    return teamMember.map((user) => {
+    return teamMembers.map((teamMember) => {
       return {
-        position: user.position,
+        position: teamMember.position,
         user: {
-          name: user.user.name,
-          studentDepartment: user.user.studentDepartment,
+          name: teamMember.user.name,
+          studentDepartment: teamMember.user.studentDepartment,
         },
         team: {
-          createdAt: user.team.createdAt,
-          name: user.team.name,
-          description: user.team.description,
-          type: user.team.type,
-          owner: formatAllUserData(user.team.owner),
-          members: user.team.members.map((team) => {
-            return formatAllUserData(team.user);
+          createdAt: teamMember.team.createdAt,
+          name: teamMember.team.name,
+          description: teamMember.team.description,
+          type: teamMember.team.type,
+          owner: formatAllUserData(teamMember.team.owner),
+          members: teamMember.team.members.map((member) => {
+            return formatAllUserData(member.user);
           }),
         },
       };

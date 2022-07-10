@@ -13,6 +13,7 @@ export class UsersController {
   async getAllUserProfile() {
     return await this.usersService.getAllUserProfile();
   }
+
   @UseGuards(AccessTokenAuthGuard)
   @Get('profile')
   async profile(@GetUser() user: User) {
