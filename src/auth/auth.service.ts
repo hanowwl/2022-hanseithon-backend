@@ -96,7 +96,6 @@ export class AuthService {
     user.lastLoginIp = ip;
     user.lastLoginAt = new Date();
     await this.userRepository.save(user);
-    console.log(user);
     const accessToken = await this.generateAccessToken(user.id);
     const refreshToken = await this.generateRefreshToken(user.id);
     return { accessToken, refreshToken };
