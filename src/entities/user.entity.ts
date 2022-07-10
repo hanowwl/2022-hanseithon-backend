@@ -2,13 +2,16 @@ import { Column, Entity, Unique } from 'typeorm';
 import { BaseEntity } from './base.entity';
 
 @Entity()
-@Unique(['username', 'phone'])
+@Unique(['username', 'phone', 'email'])
 export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 16 })
   username: string;
 
   @Column({ type: 'varchar' })
   password: string;
+
+  @Column({ type: 'varchar' })
+  email: string;
 
   @Column({ type: 'varchar', length: 11 })
   phone: string;
