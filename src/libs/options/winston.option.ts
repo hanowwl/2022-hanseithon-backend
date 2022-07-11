@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync } from 'fs';
 import { utilities, WinstonModule } from 'nest-winston';
-import * as winston from 'winston';
-import * as aily from 'winston-daily-rotate-file';
+import winston from 'winston';
+import aily from 'winston-daily-rotate-file';
 
 const logDir = 'logs';
 

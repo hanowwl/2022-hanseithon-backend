@@ -10,11 +10,11 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import ipRangeCheck from 'ip-range-check';
 import { User } from 'src/entities';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -131,5 +131,22 @@ export class AuthService {
       ),
     ]);
     return refreshToken;
+  }
+
+  public async checkIsInternalNetwork(user: User, clientIp: string) {
+    try {
+      const profile = await this.usersService.getUserProfile(user.id);
+      console.log(clientIp);
+      if (!ipRangeCheck(clientIp, '172.16.0.0/16'))
+        throw new BadRequestException('교내망 인증에 실패했어요');
+
+      profile.networkVerified = true;
+      this.userRepository.save(profile);
+      return;
+    } catch (error) {
+      console.log(error);
+      if (error instanceof HttpException) throw error;
+      throw new InternalServerErrorException('일시적인 오류가 발생했어요');
+    }
   }
 }
