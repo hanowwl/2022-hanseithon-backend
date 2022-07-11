@@ -10,6 +10,9 @@ import { winstonLogger } from './libs/options';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: winstonLogger,
+    cors: {
+      origin: ['https://hanseithon.com', 'http://172.16.255.100'],
+    },
   });
 
   app.setGlobalPrefix('api');
