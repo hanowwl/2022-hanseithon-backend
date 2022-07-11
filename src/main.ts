@@ -23,6 +23,6 @@ async function bootstrap() {
   );
   app.use('/public', express.static(join(__dirname, '../public')));
 
-  await app.listen(process.env.PORT || 4000);
+  await app.listen(process.env.PORT || 4000, '0.0.0.0');
 }
 bootstrap();
