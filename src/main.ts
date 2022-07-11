@@ -5,9 +5,12 @@ import * as express from 'express';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './libs/filters';
 import { ResponseInterceptor } from './libs/interceptors';
+import { winstonLogger } from './libs/options';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: winstonLogger,
+  });
 
   app.setGlobalPrefix('api');
   app.useGlobalFilters(new HttpExceptionFilter());
