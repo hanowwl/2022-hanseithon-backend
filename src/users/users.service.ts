@@ -24,8 +24,8 @@ export class UsersService {
 
     return teamMembers.map((teamMember) => {
       return {
-        position: teamMember.position,
         user: {
+          position: teamMember.position,
           name: teamMember.user.name,
           studentDepartment: teamMember.user.studentDepartment,
         },
