@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { FilesModule } from './files/files.module';
+import { LoggerMiddleware } from './libs/middlewares';
 import { TeamsModule } from './teams/teams.module';
 import { UsersModule } from './users/users.module';
 
@@ -47,4 +48,8 @@ import { UsersModule } from './users/users.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

@@ -8,6 +8,8 @@
     "prebuild",
     "tinyint",
     "originalname",
+    "middlewares",
+    "aily",
 
     /* commitlint */
     "commitlint",
