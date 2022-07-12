@@ -43,8 +43,36 @@ export class UsersService {
     });
   }
 
-  public async getAllUserProfile() {
-    const allUserProfile = await this.teamMemberRepository.find({
+  private async formatSecretAllUserForResponse(teamMembers: TeamMember[]) {
+    const formatAllUserData = (member: User | TeamMember) => {
+      const user = member instanceof User ? member : member.user;
+      const secretName = this.maskingName(user.name);
+      return secretName;
+    };
+
+    return teamMembers.map((teamMember) => {
+      return {
+        user: {
+          position: teamMember.position,
+          name: formatAllUserData(teamMember),
+          studentDepartment: teamMember.user.studentDepartment,
+        },
+        team: {
+          createdAt: teamMember.team.createdAt,
+          name: teamMember.team.name,
+          description: '비밀',
+          type: teamMember.team.type,
+          owner: { name: formatAllUserData(teamMember.team.owner) },
+          members: teamMember.team.members.map((member) => {
+            return { name: formatAllUserData(member.user) };
+          }),
+        },
+      };
+    });
+  }
+
+  public async getAllUserProfile(req) {
+    const allUser = await this.teamMemberRepository.find({
       select: ['id', 'position'],
       relations: ['user', 'team', 'team.members.user', 'team.owner'],
       order: {
@@ -53,8 +81,19 @@ export class UsersService {
         },
       },
     });
-
-    return this.formatAllUserForResponse(allUserProfile);
+    const accessToken = req.get('authorization');
+    if (accessToken === undefined) {
+      return this.formatSecretAllUserForResponse(allUser);
+    } else {
+      const base64Payload = accessToken
+        .replace('Bearer', '')
+        .trim()
+        .split('.')[1];
+      const payload = Buffer.from(base64Payload, 'base64');
+      const result = JSON.parse(payload.toString());
+      this.findUserById(result.sub);
+      return this.formatAllUserForResponse(allUser);
+    }
   }
 
   public async getUserProfile(id: string) {
@@ -80,5 +119,20 @@ export class UsersService {
 
   public async deleteUserByUsername(username: string) {
     return await this.userRepository.delete(username);
+  }
+
+  public maskingName(name) {
+    if (name.length > 2) {
+      const originName = name.split('');
+      originName.forEach((name, i) => {
+        if (i === 0 || i === originName.length - 1) return;
+        originName[i] = '*';
+      });
+      const joinName = originName.join();
+      return joinName.replace(/,/g, '');
+    } else {
+      const pattern = /.$/;
+      return name.replace(pattern, '*');
+    }
   }
 }
