@@ -142,9 +142,8 @@ export class AuthService {
 
       profile.networkVerified = true;
       this.userRepository.save(profile);
-      return;
+      return true;
     } catch (error) {
-      console.log(error);
       if (error instanceof HttpException) throw error;
       throw new InternalServerErrorException('일시적인 오류가 발생했어요');
     }
