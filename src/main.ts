@@ -12,6 +12,7 @@ async function bootstrap() {
     logger: winstonLogger,
     cors: {
       origin: ['https://hanseithon.com', 'http://172.16.255.100'],
+      credentials: true,
     },
   });
 
