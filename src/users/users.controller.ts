@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { AccessTokenAuthGuard } from 'src/auth/guards';
 import { User } from 'src/entities';
 import { GetUser } from './decorators';
@@ -9,8 +9,8 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get()
-  async getAllUserProfile() {
-    return await this.usersService.getAllUserProfile();
+  async getAllUserProfile(@Req() req) {
+    return await this.usersService.getAllUserProfile(req);
   }
 
   @UseGuards(AccessTokenAuthGuard)
