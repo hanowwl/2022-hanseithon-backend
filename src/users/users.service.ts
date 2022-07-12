@@ -55,12 +55,12 @@ export class UsersService {
         user: {
           position: teamMember.position,
           name: formatAllUserData(teamMember),
-          studentDepartment: teamMember.user.studentDepartment,
+          studentDepartment: '비밀',
         },
         team: {
           createdAt: teamMember.team.createdAt,
           name: teamMember.team.name,
-          description: '비밀',
+          description: teamMember.team.description,
           type: teamMember.team.type,
           owner: { name: formatAllUserData(teamMember.team.owner) },
           members: teamMember.team.members.map((member) => {
