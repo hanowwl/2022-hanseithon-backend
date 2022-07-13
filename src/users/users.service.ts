@@ -64,7 +64,9 @@ export class UsersService {
           type: teamMember.team.type,
           owner: { name: formatAllUserData(teamMember.team.owner) },
           members: teamMember.team.members.map((member) => {
-            return { name: formatAllUserData(member.user) };
+            return {
+              name: formatAllUserData(member.user),
+            };
           }),
         },
       };
@@ -76,9 +78,7 @@ export class UsersService {
       select: ['id', 'position'],
       relations: ['user', 'team', 'team.members.user', 'team.owner'],
       order: {
-        team: {
-          createdAt: 'DESC',
-        },
+        createdAt: 'DESC',
       },
     });
     const accessToken = req.get('authorization');
