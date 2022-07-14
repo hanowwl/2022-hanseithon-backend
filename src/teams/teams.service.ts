@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   HttpException,
   Injectable,
   InternalServerErrorException,
@@ -16,6 +17,9 @@ import { CreateTeamDto, JoinTeamDto, UpdateMemberPositionDto } from './dto';
 @Injectable()
 export class TeamsService {
   private readonly MAX_JOIN_USERS_COUNT: number = 10;
+  private readonly TEAM_JOIN_FINISH_DATE: Date = new Date(
+    '2022-07-15 00:00:00',
+  );
 
   constructor(
     @InjectRepository(Team)
@@ -76,6 +80,11 @@ export class TeamsService {
 
   public async createTeam(user: User, createTeamDto: CreateTeamDto) {
     try {
+      const leftTime =
+        this.TEAM_JOIN_FINISH_DATE.getTime() - new Date().getTime();
+      if (leftTime <= 0)
+        throw new ForbiddenException('이미 참가 신청이 마감됐어요');
+
       const { name, description, position, type } = createTeamDto;
       const userTeam = await this.findTeamByMemberId(user.id);
       if (userTeam) throw new BadRequestException('이미 소속 중인 팀이 있어요');
@@ -122,6 +131,11 @@ export class TeamsService {
     joinTeamDto: JoinTeamDto,
   ) {
     try {
+      const leftTime =
+        this.TEAM_JOIN_FINISH_DATE.getTime() - new Date().getTime();
+      if (leftTime <= 0)
+        throw new ForbiddenException('이미 참가 신청이 마감됐어요');
+
       const { position } = joinTeamDto;
       const userTeam = await this.findTeamByMemberId(user.id);
       if (userTeam) throw new BadRequestException('이미 소속 중인 팀이 있어요');
