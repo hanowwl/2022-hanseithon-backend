@@ -40,3 +40,6 @@ lerna-debug.log*
 
 # Docker
 docker/mariadb
+
+# Excel
+한세톤-참가팀명단.xlsx

@@ -20,7 +20,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "export:team": "ts-node -r tsconfig-paths/register ./src/extract-to-xlsx.ts"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -47,7 +48,9 @@
     "rxjs": "^7.2.0",
     "typeorm": "^0.3.6",
     "winston": "^3.8.1",
-    "winston-daily-rotate-file": "^4.7.1"
+    "winston-daily-rotate-file": "^4.7.1",
+    "xlsx": "^0.18.5",
+    "xlsx-populate": "^1.21.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
