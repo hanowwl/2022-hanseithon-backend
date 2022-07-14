@@ -1,5 +1,6 @@
-import { Body, Controller, Ip, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { User } from 'src/entities';
+import { CustomIp } from 'src/libs/decorators';
 import { GetUser } from '../users/decorators';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,7 +21,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@GetUser() user: User, @Ip() ip: string) {
+  async login(@GetUser() user: User, @CustomIp() ip: string) {
     return this.authService.login(user, ip);
   }
 
@@ -33,7 +34,7 @@ export class AuthController {
 
   @UseGuards(AccessTokenAuthGuard)
   @Post('internal-auth')
-  async checkInternalAuth(@GetUser() user: User, @Ip() clientIp: string) {
+  async checkInternalAuth(@GetUser() user: User, @CustomIp() clientIp: string) {
     return this.authService.checkIsInternalNetwork(user, clientIp);
   }
 }
