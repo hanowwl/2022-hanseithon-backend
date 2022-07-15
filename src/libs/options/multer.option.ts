@@ -1,8 +1,9 @@
 import { existsSync, mkdirSync } from 'fs';
 import { BadRequestException } from '@nestjs/common';
 import { diskStorage } from 'multer';
+import { getFileDateString } from 'src/utils';
 
-export const multerOptions = {
+export const MulterOptions = {
   fileFilter: (req, file, callback) => {
     if (file.mimetype.match('application/zip')) {
       callback(null, true);
@@ -17,14 +18,24 @@ export const multerOptions = {
   },
 
   storage: diskStorage({
-    destination: (req, file, callback) => {
-      const uploadPath = 'public';
+    destination: (req: any, file, callback) => {
+      const fileUploadStartDate: Date = new Date(2022, 6, 21, 22, 30, 0);
+      console.log(fileUploadStartDate);
+      const leftTime: number =
+        fileUploadStartDate.getTime() - new Date().getTime();
+      const uploadPath =
+        leftTime > 0
+          ? `middle/${req.user.team.name}`
+          : `final/${req.user.team.name}`;
 
       if (!existsSync(uploadPath)) {
         mkdirSync(uploadPath);
       }
-
       callback(null, uploadPath);
+    },
+
+    filename: (req, file, callback) => {
+      callback(null, getFileDateString(file, req));
     },
   }),
 };
