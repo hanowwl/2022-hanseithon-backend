@@ -1,6 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CustomDate } from './auth/dto/custom-date.dto';
 
 @Controller()
 export class AppController {
