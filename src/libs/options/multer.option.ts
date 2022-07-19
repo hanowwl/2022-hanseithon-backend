@@ -32,7 +32,9 @@ export const MulterOptions = (teamName: string) => ({
           fileUploadStartDate.getTime() - new Date().getTime();
 
         const uploadPath =
-          leftTime > 0 ? `middle/${teamName}` : `final/${teamName}`;
+          leftTime > 0
+            ? `uploads/middle/${teamName}`
+            : `uploads/final/${teamName}`;
 
         if (!existsSync(uploadPath)) {
           mkdirSync(uploadPath);
