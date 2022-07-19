@@ -13,7 +13,8 @@ const getFileDateString = (file, req) => {
     '분_' +
     d.getSeconds() +
     '초_' +
-    req.user.name
+    req.user.name +
+    '.zip'
   );
 };
 
