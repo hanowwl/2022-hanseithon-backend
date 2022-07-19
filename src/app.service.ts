@@ -8,7 +8,6 @@ export class AppService {
   }
 
   public async getServerTime() {
-    console.log(getServerTime());
     return getServerTime();
   }
 }
