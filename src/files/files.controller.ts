@@ -42,7 +42,6 @@ export class FilesController {
     @Param('type') type: 'middle' | 'final',
     @Param('fileName') fileName: string,
   ) {
-    console.log(team);
     return this.filesService.downloadFile(res, team, type, fileName);
   }
 }
