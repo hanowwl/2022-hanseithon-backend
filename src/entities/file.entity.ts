@@ -15,7 +15,7 @@ export class File extends BaseEntity {
   @Column({ type: 'int' })
   size: number;
 
-  @Column({ enum: UPLOAD_FILE_TYPE_VALUES })
+  @Column({ type: 'enum', enum: UPLOAD_FILE_TYPE_VALUES })
   type: UPLOAD_FILE_TYPE;
 
   @ManyToOne(() => TeamMember, (member) => member.id, { onDelete: 'SET NULL' })
