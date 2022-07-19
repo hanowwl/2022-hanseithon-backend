@@ -1,9 +1,15 @@
 import { existsSync, mkdirSync } from 'fs';
-import { BadRequestException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
+import { Request } from 'express';
 import { diskStorage } from 'multer';
 import { getFileDateString } from 'src/utils';
 
-export const MulterOptions = {
+export const MulterOptions = (teamName: string) => ({
   fileFilter: (req, file, callback) => {
     if (file.mimetype.match('application/zip')) {
       callback(null, true);
@@ -18,24 +24,27 @@ export const MulterOptions = {
   },
 
   storage: diskStorage({
-    destination: (req: any, file, callback) => {
-      const fileUploadStartDate: Date = new Date(2022, 6, 21, 22, 30, 0);
-      console.log(fileUploadStartDate);
-      const leftTime: number =
-        fileUploadStartDate.getTime() - new Date().getTime();
-      const uploadPath =
-        leftTime > 0
-          ? `middle/${req.user.team.name}`
-          : `final/${req.user.team.name}`;
+    destination: (req: Request, file, callback) => {
+      try {
+        const fileUploadStartDate: Date = new Date(2022, 6, 21, 22, 30, 0);
+        const leftTime: number =
+          fileUploadStartDate.getTime() - new Date().getTime();
 
-      if (!existsSync(uploadPath)) {
-        mkdirSync(uploadPath);
+        const uploadPath =
+          leftTime > 0 ? `middle/${teamName}` : `final/${teamName}`;
+
+        if (!existsSync(uploadPath)) {
+          mkdirSync(uploadPath);
+        }
+        callback(null, uploadPath);
+      } catch (error) {
+        if (error instanceof HttpException) throw error;
+        throw new InternalServerErrorException('일시적인 오류가 발생했어요');
       }
-      callback(null, uploadPath);
     },
 
     filename: (req, file, callback) => {
       callback(null, getFileDateString(file, req));
     },
   }),
-};
+});
