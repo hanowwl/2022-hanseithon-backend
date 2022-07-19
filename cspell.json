@@ -16,7 +16,8 @@
 
     /* project words */
     "hansei",
-    "hanseithon"
+    "hanseithon",
+    "ssword"
   ],
   "flagWords": [],
   "ignorePaths": ["node_modules/**", "./README.md", ".gitignore"]
