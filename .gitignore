@@ -40,3 +40,7 @@ lerna-debug.log*
 
 # Docker
 docker/mariadb
+
+# File
+final
+middle

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { getServerTime } from './utils';
 
 @Injectable()
 export class AppService {
@@ -7,14 +8,6 @@ export class AppService {
   }
 
   public async getServerTime() {
-    const today = new Date();
-    return {
-      year: today.getFullYear(),
-      month: today.getMonth() + 1,
-      day: today.getUTCDate() + 1,
-      hour: today.getUTCHours() - 15,
-      minute: today.getUTCMinutes(),
-      second: today.getUTCSeconds(),
-    };
+    return getServerTime();
   }
 }

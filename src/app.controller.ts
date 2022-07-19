@@ -1,6 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CustomDate } from './auth/dto/custom-date.dto';
 
 @Controller()
 export class AppController {
@@ -11,7 +10,7 @@ export class AppController {
     return this.appService.getHello();
   }
   @Get('time')
-  async getServerTime(): Promise<CustomDate> {
+  async getServerTime() {
     return await this.appService.getServerTime();
   }
 }
