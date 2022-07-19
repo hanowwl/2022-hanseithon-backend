@@ -39,13 +39,14 @@ export class FilesService {
       const result = {};
       const middleFiles = fs.readdirSync(this.MIDDLE_FILE_UPLOAD_PATH);
       const finalFiles = fs.readdirSync(this.FINAL_FILE_UPLOAD_PATH);
+      const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
 
       for (const team of middleFiles) {
         const files = fs.readdirSync(`${this.MIDDLE_FILE_UPLOAD_PATH}/${team}`);
         result[team] = {
           middle: files.map(
             (file) =>
-              `http://${host}/api/files/download/${team}/middle/${file}`,
+              `${protocol}://${host}/api/files/download/${team}/middle/${file}`,
           ),
         };
       }
@@ -55,7 +56,8 @@ export class FilesService {
         result[team] = {
           ...result[team],
           final: files.map(
-            (file) => `http://${host}/api/files/download/${team}/final/${file}`,
+            (file) =>
+              `${protocol}://${host}/api/files/download/${team}/final/${file}`,
           ),
         };
       }
