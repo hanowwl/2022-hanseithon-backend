@@ -8,9 +8,11 @@ import { Request } from 'express';
 import { diskStorage } from 'multer';
 import { getFileDateString } from 'src/utils';
 
+const ALLOW_FILE_MIME = ['application/zip', 'application/x-zip-compressed'];
+
 export const MulterOptions = (teamName: string) => ({
   fileFilter: (req, file, callback) => {
-    if (file.mimetype.match('application/x-zip-compressed')) {
+    if (ALLOW_FILE_MIME.includes(file.mimetype)) {
       callback(null, true);
     } else {
       callback(
