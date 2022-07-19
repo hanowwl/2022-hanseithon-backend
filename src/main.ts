@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import bodyParser from 'body-parser';
 import * as express from 'express';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './libs/filters';
@@ -25,6 +26,9 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
   app.use('/public', express.static(join(__dirname, '../public')));
 
   await app.listen(process.env.PORT || 4000, '0.0.0.0');
