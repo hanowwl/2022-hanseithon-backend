@@ -3,7 +3,6 @@ import {
   BadRequestException,
   HttpException,
   InternalServerErrorException,
-  NotFoundException,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { diskStorage } from 'multer';
@@ -11,7 +10,7 @@ import { getFileDateString } from 'src/utils';
 
 export const MulterOptions = (teamName: string) => ({
   fileFilter: (req, file, callback) => {
-    if (file.mimetype.match('application/zip')) {
+    if (file.mimetype.match('application/x-zip-compressed')) {
       callback(null, true);
     } else {
       callback(
