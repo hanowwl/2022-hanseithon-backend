@@ -32,13 +32,16 @@ export const MulterOptions = (teamName: string) => ({
           fileUploadStartDate.getTime() - new Date().getTime();
 
         const uploadPath =
-          leftTime > 0 ? `middle/${teamName}` : `final/${teamName}`;
+          leftTime > 0
+            ? `uploads/middle/${teamName}`
+            : `uploads/final/${teamName}`;
 
         if (!existsSync(uploadPath)) {
           mkdirSync(uploadPath);
         }
         callback(null, uploadPath);
       } catch (error) {
+        console.log(error);
         if (error instanceof HttpException) throw error;
         throw new InternalServerErrorException('일시적인 오류가 발생했어요');
       }
