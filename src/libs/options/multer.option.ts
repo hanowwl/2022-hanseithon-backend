@@ -27,7 +27,7 @@ export const MulterOptions = (teamName: string) => ({
   storage: diskStorage({
     destination: (req: Request, file, callback) => {
       try {
-        const fileUploadStartDate: Date = new Date(2022, 6, 21, 22, 30, 0);
+        const fileUploadStartDate: Date = new Date(2022, 6, 21, 13, 30, 0);
         const leftTime: number =
           fileUploadStartDate.getTime() - new Date().getTime();
 
